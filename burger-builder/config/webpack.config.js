@@ -367,11 +367,14 @@ module.exports = function(webpackEnv) {
             {
               test: /\.(js|mjs)$/,
               exclude: /@babel(?:\/|\\{1,2})runtime/,
+              exclude: /node_modules/,
               loader: require.resolve('babel-loader'),
               options: {
                 babelrc: false,
                 configFile: false,
                 compact: false,
+                modules: true,
+                localIdentName: "[name]__[local]__[hash:base64:5]",
                 presets: [
                   [
                     require.resolve('babel-preset-react-app/dependencies'),
