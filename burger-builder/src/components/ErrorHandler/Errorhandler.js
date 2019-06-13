@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "./../UI/Modal/Modal";
-import Aux from "./../../hoc/Aux";
+import Aux from "../../hoc/Ouxed";
 import BurgerBuilder from "../../containers/BurgerBuilder/BurgerBuilder";
 import axios from "./../../axios-order";
 
