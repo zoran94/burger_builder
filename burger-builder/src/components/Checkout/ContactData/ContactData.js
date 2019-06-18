@@ -6,7 +6,7 @@ import "./contactdata.css"
 import axios from "../../../axios-order";
 import Input from "./../../UI/Input/input";
 import { connect } from "react-redux";
-
+import {fetchBurgerOrder} from "./../../../store/actions/order";
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -86,12 +86,11 @@ class ContactData extends Component {
                     options: [{ value: "fastest", display: "Fastest" },
                             { value: "chepest", display: "Chepaest" }]
                 },
-                value: "",
+                value: "fastest",
                 validation: {},
                 valid: true
             },
-        },
-        loading: false
+        }
     }
 
     checkValididty(value, rules) {
@@ -115,20 +114,13 @@ class ContactData extends Component {
             orderData[orderFormIElemdentifier] = this.state.orderForm[orderFormIElemdentifier].value;
 
         }
-
-        this.setState({ loading: true })
         const order = {
             ingredients: this.props.ingreds,
             price: this.props.price,
             orderFormData: orderData
 
         }
-        axios.post("/orders.json", order)
-            .then(response => {
-                this.setState({ loading: false })
-                this.props.history.push("/")
-            })
-            .catch(error => this.setState({ loading: false }))
+        this.props.onOrderBurger(order)
     }
 
     onInputHandler = (event, elemIdentifier) => {
@@ -176,7 +168,7 @@ class ContactData extends Component {
                 <Button btnType="Success" >ORDER</Button>
             </form>
         );
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />
         }
         return (
@@ -192,9 +184,17 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingreds: state.ingredients,
-        price: state.totalPrice
+        ingreds: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.loading
     }
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData) => dispatch(fetchBurgerOrder(orderData))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
