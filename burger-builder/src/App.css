@@ -31,3 +31,13 @@
     transform: rotate(360deg);
   }
 }
+
+
+.authorise {
+  margin: auto;
+    text-align: center;
+    color: #703b09;
+    font-weight: bold;
+    font-family: cursive;
+
+}
