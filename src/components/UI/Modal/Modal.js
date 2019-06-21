@@ -8,8 +8,9 @@ const Modal = (props) => {
     return (
         <Aux>
         <Backdrop 
+        show={props.show}
         clicked={props.modalClosed}
-        show={props.show} />
+         />
         <div 
          style={{
             transform: props.show ? "translateY(0)" : "translateY(-100vh)",
