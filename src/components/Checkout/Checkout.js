@@ -6,24 +6,6 @@ import ContactData from "./ContactData/ContactData";
 import { purchaseInit } from "./../../store/actions/order";
 
 class Checkout extends Component {
-    // state ={
-    //     ingredients: null,
-    //     price: 5
-    // }
-
-    // componentWillMount(){
-    //     const query  = new URLSearchParams(this.props.location.search);
-    //     const ingredients = {};
-    //     let price = 0;
-    //     for(let param of query.entries()){
-    //         if(param[0] === "price"){
-    //             price = param[1];
-    //         }else{
-    //             ingredients[param[0]] = +param[1] 
-    //         }
-    //     }
-    //     this.setState({ingredients: ingredients, totalPrice:price})
-    // }
 
     componentWillMount(){
         this.props.onInitPurchase()
