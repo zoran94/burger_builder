@@ -16,7 +16,7 @@ const Layout = ({isAuthenticated, children}) => {
     }
 
     const sideDrawToggleHandler = () => {
-        setShowSideDriver(false)
+        setShowSideDriver(true)
     }
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import Aux from "../../hoc/Ouxed";
 import Burger from "./../../components/Burger/Burger";
 import BuildControls from "./../../components/Burger/BuildControls/BuildControls";
@@ -8,31 +8,28 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import { connect } from "react-redux";
 import * as burgerBuilderActions from "./../../store/actions/burgerBuilder";
 
-class BurgerBuilder extends React.Component {
-    state = {
-        purchasing: false,
-        loading: false
+const BurgerBuilder = (props) =>  {
+    const [purchasing, setPurchasing] = useState(false);
+    const [loading, setLoading] = useState(false)
 
-    }
+    useEffect(() => {
+        props.onFetchIngredients()
+    }, [])
 
-    componentDidMount() {
-        this.props.onFetchIngredients()
-    }
-
-    isModalClosed = () => {
-        this.setState({ purchasing: false })
+    const isModalClosed = () => {
+        setPurchasing(false)
     }
 
 
-    purchaseHandler = () => {
-        if(this.props.isAuthenticated){
-            this.setState({ purchasing: true })
+    const purchaseHandler = () => {
+        if(props.isAuthenticated){
+            setPurchasing(true)
         }else {
-            this.props.history.push("/auth")
+            props.history.push("/auth")
         }
     }
 
-    purchaseContinueHandler = () => {
+   const purchaseContinueHandler = () => {
         //  alert("you continue! fast");
 
         // const queryPramteres = [];
@@ -41,8 +38,8 @@ class BurgerBuilder extends React.Component {
         // }
         // queryPramteres.push("price=" + this.state.totalPrice)
         // const queryString = queryPramteres.join("&");
-        this.props.onInitPurchase();
-        this.props.history.push(
+        props.onInitPurchase();
+        props.history.push(
             "/checkout"
             // search: "?" + queryString
         )
@@ -50,7 +47,7 @@ class BurgerBuilder extends React.Component {
 
 
 
-    updatePurchaseState = (ingredients) => {
+    const updatePurchaseState = (ingredients) => {
 
         const sum = Object.keys(ingredients)
             .map(iKey => {
@@ -66,20 +63,7 @@ class BurgerBuilder extends React.Component {
     }
 
 
-    // onAddIngredienthandler = (type) => {
-    //     const oldCount = this.state.ingredients[type];
-    //     const updatedCount = oldCount + 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-    //     updatedIngredients[type] = updatedCount;
-    //     const priceAddition = INGREDIENT_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice + priceAddition;
-
-    //     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
-    //     this.updatePurchaseState(updatedIngredients)
-    // }
+    
 
     // onRemoveIngredientHandler = (type) => {
     //     const oldCount = this.state.ingredients[type];
@@ -105,11 +89,8 @@ class BurgerBuilder extends React.Component {
     // }
 
 
-
-    render() {
-
         const disabledInfo = {
-            ...this.props.ingreds
+            ...props.ingreds
         };
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0
@@ -117,43 +98,43 @@ class BurgerBuilder extends React.Component {
         let orderSummary = null;
 
         let burger = <Spinner />
-        if (this.props.ingreds) {
+        if (props.ingreds) {
 
             burger = (
                 <Aux>
-                    <Burger ingredients={this.props.ingreds} />
+                    <Burger ingredients={props.ingreds} />
                     <BuildControls
-                        addedIngredients={this.props.onIngredientAdd}
-                        removedIngredients={this.props.onIngredientRemove}
+                        addedIngredients={props.onIngredientAdd}
+                        removedIngredients={props.onIngredientRemove}
                         disabled={disabledInfo}
-                        purchaseable={this.updatePurchaseState(this.props.ingreds)}
-                        ordered={this.purchaseHandler}
-                        price={this.props.price}
-                        isAuth={this.props.isAuthenticated}
+                        purchaseable={updatePurchaseState(props.ingreds)}
+                        ordered={purchaseHandler}
+                        price={props.price}
+                        isAuth={props.isAuthenticated}
                     />
                 </Aux>
             )
             orderSummary = <OrderSummary
-                ingredients={this.props.ingreds}
-                purchaseCancelled={this.isModalClosed}
-                purchaseContinued={this.purchaseContinueHandler}
-                totalPrice={this.props.price} />
+                ingredients={props.ingreds}
+                purchaseCancelled={isModalClosed}
+                purchaseContinued={purchaseContinueHandler}
+                totalPrice={props.price} />
         }
-        if (this.state.loading) {
+        if (loading) {
             orderSummary = <Spinner />
         }
         return (
             <Aux>
                 <Modal
-                    modalClosed={this.isModalClosed}
-                    show={this.state.purchasing}>
+                    modalClosed={isModalClosed}
+                    show={purchasing}>
                     {orderSummary}
                 </Modal>
                 {burger}
             </Aux>
         );
     }
-}
+
 
 const mapStateToProps = state => {
     return {

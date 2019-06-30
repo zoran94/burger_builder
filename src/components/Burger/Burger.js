@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-
 import "./burger.css"
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
@@ -19,7 +18,6 @@ const burger = (props) => {
     if(transformIngredients.length === 0){
         transformIngredients = <p>Please start adding ingredients</p>
     }
-    //console.log(transformIngredients)
     return(
         <div class="burger">
             <BurgerIngredient type="bread-top"/>
