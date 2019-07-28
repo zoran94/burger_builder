@@ -28,10 +28,6 @@ class Orders extends Component {
                     />
                 )
             })
-
-
-
-
         }
 
         return (

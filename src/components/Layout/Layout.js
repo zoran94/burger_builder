@@ -19,8 +19,6 @@ const Layout = ({isAuthenticated, children}) => {
         setShowSideDriver(true)
     }
 
-
-
         return (
             <>
         <Aux>
